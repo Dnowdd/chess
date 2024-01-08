@@ -162,33 +162,45 @@ $('.piece').on('click', function(){
         posLetterBackLeft = posLetter;
 
         for(i=posNum+1;i<=8;i++){
+            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA DIREITA
             posLetterFrontRight = proxLetter(posLetterFrontRight,'right');
-            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
             
             if(verifyContain(posLetterFrontRight+i) == false){
                 break;
             }
+
+            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
+        }
+        for(i=posNum+1;i<=8;i++){
+            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA ESQUERDA
+            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
+            
             if(verifyContain(posLetterFrontLeft+i) == false){
                 break;
             }
 
-            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
             $('#'+posLetterFrontLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontLeft + i}')"><div class="mark"></div></div>`);
         }
 
-        for(o=posNum-1;o>=1;o--){
-            posLetterBackRight = proxLetter(posLetterBackRight,'right');
+        for(i=posNum-1;i>=1;i--){
+            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA ESQUERDA
             posLetterBackLeft = proxLetter(posLetterBackLeft,'left');
             
-            if(verifyContain(posLetterBackRight+o) == false){
-                break;
-            }
-            if(verifyContain(posLetterBackLeft+o) == false){
+            if(verifyContain(posLetterBackLeft+i) == false){
                 break;
             }
 
-            $('#'+posLetterBackRight+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + o}')"><div class="mark"></div></div>`);
-            $('#'+posLetterBackLeft+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + o}')"><div class="mark"></div></div>`);
+            $('#'+posLetterBackLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + i}')"><div class="mark"></div></div>`);
+        }
+        for(i=posNum-1;i>=1;i--){
+            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA DIREITA
+            posLetterBackRight = proxLetter(posLetterBackRight,'right');
+            
+            if(verifyContain(posLetterBackRight+i) == false){
+                break;
+            }
+
+            $('#'+posLetterBackRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + i}')"><div class="mark"></div></div>`);
         }
     }else if(pieceType == "queen"){
         //CONFIGURAÇÃO DA RAINHA
@@ -204,62 +216,83 @@ $('.piece').on('click', function(){
         posLetterLeft = posLetter;
 
         for(i=posNum+1;i<=8;i++){
+            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA DIREITA
             posLetterFrontRight = proxLetter(posLetterFrontRight,'right');
-            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
             
             if(verifyContain(posLetterFrontRight+i) == false){
                 break;
             }
+
+            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
+        }
+        for(i=posNum+1;i<=8;i++){
+            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA ESQUERDA
+            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
+            
             if(verifyContain(posLetterFrontLeft+i) == false){
                 break;
             }
 
-            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
             $('#'+posLetterFrontLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontLeft + i}')"><div class="mark"></div></div>`);
-
-            // DEFINE AS OPÇÕES PARA CIMA
-            if(verifyContain(posLetter+i) == false){
-                break;
-            }
-
-            $('#'+posLetter+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetter + i}')"><div class="mark"></div></div>`);
         }
 
-        for(o=posNum-1;o>=1;o--){
-            posLetterBackRight = proxLetter(posLetterBackRight,'right');
+        for(i=posNum-1;i>=1;i--){
+            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA ESQUERDA
             posLetterBackLeft = proxLetter(posLetterBackLeft,'left');
-
-            if(verifyContain(posLetterBackRight+o) == false){
-                break;
-            }
-            if(verifyContain(posLetterBackLeft+o) == false){
+            
+            if(verifyContain(posLetterBackLeft+i) == false){
                 break;
             }
 
-            $('#'+posLetterBackRight+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + o}')"><div class="mark"></div></div>`);
-            $('#'+posLetterBackLeft+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + o}')"><div class="mark"></div></div>`);
-
-            // DEFINE AS OPÇÕES PARA BAIXO
-            if(verifyContain(posLetter+o) == false){
+            $('#'+posLetterBackLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + i}')"><div class="mark"></div></div>`);
+        }
+        for(i=posNum-1;i>=1;i--){
+            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA DIREITA
+            posLetterBackRight = proxLetter(posLetterBackRight,'right');
+            
+            if(verifyContain(posLetterBackRight+i) == false){
                 break;
             }
 
-            $('#'+posLetter+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetter + o}')"><div class="mark"></div></div>`);
+            $('#'+posLetterBackRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + i}')"><div class="mark"></div></div>`);
         }
 
-        for(u=posNum-1;u>=1;u--){
-            posLetterRight = proxLetter(posLetterRight,'right');
+        for(u=1;u<=8;u++){
+            //DEFINE AS OPÇÕES PARA A ESQUERDA
             posLetterLeft = proxLetter(posLetterLeft,'left');
             
-            if(verifyContain(posLetterRight+posNum) == false){
+            if(posLetterLeft == false || posLetterLeft == undefined || verifyContain(posLetterLeft+posNum) == false){
                 break;
             }
-            if(verifyContain(posLetterLeft+posNum) == false){
+
+            $('#'+posLetterLeft+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterLeft + posNum}')"><div class="mark"></div></div>`);
+        }
+
+        for(j=1;j<=8;j++){
+            //DEFINE AS OPÇÕES PARA A DIREITA
+            posLetterRight = proxLetter(posLetterRight,'right');
+            
+            if(posLetterRight == false || posLetterRight == undefined || verifyContain(posLetterRight+posNum) == false){
                 break;
             }
 
             $('#'+posLetterRight+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterRight + posNum}')"><div class="mark"></div></div>`);
-            $('#'+posLetterLeft+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterLeft + posNum}')"><div class="mark"></div></div>`);
+        }
+
+        for(i=posNum+1;i<=8;i++){
+            // DEFINE AS OPÇÕES PARA CIMA
+            if(verifyContain(posLetter+i) == false){
+                break;
+            }
+            $('#'+posLetter+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetter + i}')"><div class="mark"></div></div>`);
+        }
+
+        for(o=posNum-1;o>=1;o--){
+            // DEFINE AS OPÇÕES PARA BAIXO
+            if(verifyContain(posLetter+o) == false){
+                break;
+            }
+            $('#'+posLetter+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetter + o}')"><div class="mark"></div></div>`);
         }
     }else if(pieceType == "rook"){
         //CONFIGURAÇÃO DA TORRE
@@ -285,21 +318,26 @@ $('.piece').on('click', function(){
             $('#'+posLetter+o).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetter + o}')"><div class="mark"></div></div>`);
         }
 
-        for(u=posNum-1;u>=1;u--){
-            posLetterRight = proxLetter(posLetterRight,'right');
+        for(u=1;u<=8;u++){
+            //DEFINE AS OPÇÕES PARA A ESQUERDA
             posLetterLeft = proxLetter(posLetterLeft,'left');
-
-            console.log(u);
             
-            if(verifyContain(posLetterRight+posNum) == false){
-                console.log('deu');
+            if(posLetterLeft == false || posLetterLeft == undefined || verifyContain(posLetterLeft+posNum) == false){
+                break;
             }
-            if(verifyContain(posLetterLeft+posNum) == false){
-                console.log('deu');
+
+            $('#'+posLetterLeft+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterLeft + posNum}')"><div class="mark"></div></div>`);
+        }
+
+        for(j=1;j<=8;j++){
+            //DEFINE AS OPÇÕES PARA A DIREITA
+            posLetterRight = proxLetter(posLetterRight,'right');
+            
+            if(posLetterRight == false || posLetterRight == undefined || verifyContain(posLetterRight+posNum) == false){
+                break;
             }
 
             $('#'+posLetterRight+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterRight + posNum}')"><div class="mark"></div></div>`);
-            $('#'+posLetterLeft+posNum).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterLeft + posNum}')"><div class="mark"></div></div>`);
         }
     }
 });

@@ -64,7 +64,7 @@ body{
 
 
 
-/* #a8::after{
+#a8::after{
     content: "8";
     position: absolute;
     top: var(--corner-mark);
@@ -191,7 +191,7 @@ body{
     right: calc(var(--corner-mark) + 5px);
 
     color: var(--color-1);
-} */
+}
 
 
 .piece{
