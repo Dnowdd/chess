@@ -1,5 +1,6 @@
 function removeMarks(){
-    $('.poss').remove()
+    $('.poss').remove();
+    $('.killable').removeClass('killable');
 }
 function proxPos(side, pos, qnt, color){
     result = [];
@@ -81,15 +82,118 @@ function proxLetter(l,order){
         }
     }
 }
+function setKillablePieces(pos,color){
+    if(color == "white"){
+        if($('#'+pos+' > .piece')[0].getAttribute('color') == "black"){
+            $('#'+pos).addClass('killable');
+        }
+    }else if(color == "black"){
+        if($('#'+pos+' > .piece')[0].getAttribute('color') == "white"){
+            $('#'+pos).addClass('killable');
+        }
+    }
+}
+function setPosDiagonals(pos,color){
+    posNum = parseInt(pos.split('')[1]);
+    posLetter = pos.split('')[0];
+
+    posLetterFrontRight = posLetter;
+    posLetterFrontLeft = posLetter;
+    posLetterBackLeft = posLetter;
+    posLetterBackRight = posLetter;
+
+    for(i=posNum+1;i<=8;i++){
+        // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA DIREITA
+        posLetterFrontRight = proxLetter(posLetterFrontRight,'right');
+        
+        // VERIFICA SE EXISTE UMA PEÇA NA DIAGONAL DIREITA FRONTAL
+        if(!verifyContain(posLetterFrontRight+i)){
+            // VERIFICA SE ELE PODE COMER A PEÇA ALVO
+            setKillablePieces(posLetterFrontRight+i,color);
+            break;
+        }
+
+        $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
+    }
+    for(i=posNum+1;i<=8;i++){
+        // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA ESQUERDA
+        posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
+        
+        // VERIFICA SE EXISTE UMA PEÇA NA DIAGONAL ESQUERDA FRONTAL
+        if(!verifyContain(posLetterFrontLeft+i)){
+            // VERIFICA SE ELE PODE COMER A PEÇA ALVO
+            setKillablePieces(posLetterFrontLeft+i,color);
+            break;
+        }
+
+        $('#'+posLetterFrontLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontLeft + i}')"><div class="mark"></div></div>`);
+    }
+    for(i=posNum-1;i>=1;i--){
+        // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA ESQUERDA
+        posLetterBackLeft = proxLetter(posLetterBackLeft,'left');
+        
+        // VERIFICA SE EXISTE UMA PEÇA NA DIAGONAL ESQUERDA TRASEIRA
+        if(!verifyContain(posLetterBackLeft+i)){
+            // VERIFICA SE ELE PODE COMER A PEÇA ALVO
+            setKillablePieces(posLetterBackLeft+i,color);
+            break;
+        }
+
+        $('#'+posLetterBackLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + i}')"><div class="mark"></div></div>`);
+    }
+    for(i=posNum-1;i>=1;i--){
+        // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA DIREITA
+        posLetterBackRight = proxLetter(posLetterBackRight,'right');
+        
+        // VERIFICA SE EXISTE UMA PEÇA NA DIAGONAL DIREITA TRASEIRA
+        if(!verifyContain(posLetterBackRight+i)){
+            // VERIFICA SE ELE PODE COMER A PEÇA ALVO
+            setKillablePieces(posLetterBackRight+i,color);
+            break;
+        }
+
+        $('#'+posLetterBackRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + i}')"><div class="mark"></div></div>`);
+    }
+}
 
 $('.piece').on('click', function(){
     removeMarks()
     posAtual = this.getAttribute('pos');
     pieceType = this.getAttribute('piece');
+    pieceColor = this.getAttribute('color');
 
     if(pieceType == "pawn"){
+        posNum = parseInt(posAtual.split('')[1]);
+        posLetter = posAtual.split('')[0];
+
         //CONFIGURAÇÃO DO PEÃO        
-        proxFrente = proxPos('front', posAtual, 2, 'w');
+        if (pieceColor == "white"){
+            posNumEnemy = parseInt(posNum) + 1;
+            if(posNum !== 2){
+                proxFrente = proxPos('front', posAtual, 1, 'w');
+            }else{
+                proxFrente = proxPos('front', posAtual, 2, 'w');
+            }
+
+        }else if(pieceColor == "black"){
+            posNumEnemy = parseInt(posNum) - 1;
+            if(posNum !== 7){
+                proxFrente = proxPos('front', posAtual, 1, 'b');
+            }else{
+                proxFrente = proxPos('front', posAtual, 2, 'b');
+            }
+        }else{
+            return;
+        }
+        posLetterEnemy1 = proxLetter(posLetter, 'left');
+        posLetterEnemy2 = proxLetter(posLetter, 'right');
+
+        if(!verifyContain(posLetterEnemy1+posNumEnemy)){
+            $('#'+posLetterEnemy1+posNumEnemy).addClass("killable");
+        }
+        if(!verifyContain(posLetterEnemy2+posNumEnemy)){
+            $('#'+posLetterEnemy2+posNumEnemy).addClass("killable");
+        }
 
         posNum = parseInt(posAtual.split('')[1]);
         posLetter = posAtual.split('')[0];
@@ -161,47 +265,7 @@ $('.piece').on('click', function(){
         posLetterBackRight = posLetter;
         posLetterBackLeft = posLetter;
 
-        for(i=posNum+1;i<=8;i++){
-            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA DIREITA
-            posLetterFrontRight = proxLetter(posLetterFrontRight,'right');
-            
-            if(verifyContain(posLetterFrontRight+i) == false){
-                break;
-            }
-
-            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
-        }
-        for(i=posNum+1;i<=8;i++){
-            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA ESQUERDA
-            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
-            
-            if(verifyContain(posLetterFrontLeft+i) == false){
-                break;
-            }
-
-            $('#'+posLetterFrontLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontLeft + i}')"><div class="mark"></div></div>`);
-        }
-
-        for(i=posNum-1;i>=1;i--){
-            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA ESQUERDA
-            posLetterBackLeft = proxLetter(posLetterBackLeft,'left');
-            
-            if(verifyContain(posLetterBackLeft+i) == false){
-                break;
-            }
-
-            $('#'+posLetterBackLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + i}')"><div class="mark"></div></div>`);
-        }
-        for(i=posNum-1;i>=1;i--){
-            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA DIREITA
-            posLetterBackRight = proxLetter(posLetterBackRight,'right');
-            
-            if(verifyContain(posLetterBackRight+i) == false){
-                break;
-            }
-
-            $('#'+posLetterBackRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + i}')"><div class="mark"></div></div>`);
-        }
+        setPosDiagonals(posAtual,pieceColor);
     }else if(pieceType == "queen"){
         //CONFIGURAÇÃO DA RAINHA
         posNum = parseInt(posAtual.split('')[1]);
@@ -215,47 +279,7 @@ $('.piece').on('click', function(){
         posLetterRight = posLetter;
         posLetterLeft = posLetter;
 
-        for(i=posNum+1;i<=8;i++){
-            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA DIREITA
-            posLetterFrontRight = proxLetter(posLetterFrontRight,'right');
-            
-            if(verifyContain(posLetterFrontRight+i) == false){
-                break;
-            }
-
-            $('#'+posLetterFrontRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontRight + i}')"><div class="mark"></div></div>`);
-        }
-        for(i=posNum+1;i<=8;i++){
-            // DEFINE AS OPCÕES PARA A DIAGONAL FRONTAL DA ESQUERDA
-            posLetterFrontLeft = proxLetter(posLetterFrontLeft,'left');
-            
-            if(verifyContain(posLetterFrontLeft+i) == false){
-                break;
-            }
-
-            $('#'+posLetterFrontLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterFrontLeft + i}')"><div class="mark"></div></div>`);
-        }
-
-        for(i=posNum-1;i>=1;i--){
-            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA ESQUERDA
-            posLetterBackLeft = proxLetter(posLetterBackLeft,'left');
-            
-            if(verifyContain(posLetterBackLeft+i) == false){
-                break;
-            }
-
-            $('#'+posLetterBackLeft+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackLeft + i}')"><div class="mark"></div></div>`);
-        }
-        for(i=posNum-1;i>=1;i--){
-            // DEFINE AS OPCÕES PARA A DIAGONAL TRASEIRA DA DIREITA
-            posLetterBackRight = proxLetter(posLetterBackRight,'right');
-            
-            if(verifyContain(posLetterBackRight+i) == false){
-                break;
-            }
-
-            $('#'+posLetterBackRight+i).html(`<div class="poss" onclick="changePosition('${posLetter + posNum}','${posLetterBackRight + i}')"><div class="mark"></div></div>`);
-        }
+        setPosDiagonals(posAtual,pieceColor);
 
         for(u=1;u<=8;u++){
             //DEFINE AS OPÇÕES PARA A ESQUERDA
