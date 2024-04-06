@@ -58,6 +58,9 @@ body{
 .board > .row:nth-child(odd) > div:nth-child(odd){
     background-color: var(--color-2);
 }
+.board > .row > .killable{
+    background-color: rgb(255, 125, 125) !important;
+}
 
 
 
